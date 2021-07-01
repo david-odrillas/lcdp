@@ -7,6 +7,7 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreProductRequest;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
@@ -22,7 +23,8 @@ class ProductController extends Controller
      */
     public function index(Category $category)
     {
-        $products =Product::where('category_id', $category->id)->get();
+        if(Auth::check()) $products =Product::where('category_id', $category->id)->withTrashed()->orderBy('name', 'ASC')->get();
+        else $products =Product::where('category_id', $category->id)->orderBy('name', 'ASC')->get();
         return view('products.index', compact(['products', 'category']));
     }
 
@@ -86,7 +88,8 @@ class ProductController extends Controller
      */
     public function update(Request $request, Category $category, Product $product)
     {
-        //
+        $product->update($request->all());
+        return redirect()->route('products.show', $product->id);
     }
 
     /**
@@ -96,8 +99,11 @@ class ProductController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Category $category, Product $product)
+    public function destroy($id)
     {
-        //
+        $product = Product::withTrashed()->find($id);
+        if($product->trashed()) $product->restore();
+        else  $product->delete();
     }
+
 }

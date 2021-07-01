@@ -56,7 +56,7 @@ class ProductTest extends TestCase
     Storage::assertExists('public/images/'.$file->hashName());
     $this->assertDatabaseCount('products', 1);
     $product = Product::first();
-    $this->assertEquals($product->name,'Product Test');
+    $this->assertEquals($product->name,'PRODUCT TEST');
     $response->assertRedirect('/products/'.$product->id);
   }
   //solo usuarios autenticados pueden ver el show.
@@ -130,5 +130,59 @@ class ProductTest extends TestCase
       ->assertViewIs('products.edit')
      // ->assertViewHas('category', $category);
       ->assertViewHas('product', $product);
+  }
+  // solo usuarios autenticados pueden actualizar.
+  public function test_product_update_guest()
+  {
+    Category::factory()->hasProducts()->create();
+    $this->assertDatabaseCount('categories', 1);
+    $this->assertDatabaseCount('products', 1);
+    $product = Product::first();
+    $response = $this->put('/products/'.$product->id,[
+      'name' => 'Product Update'
+    ]);
+    $response->assertRedirect('/login');
+  }
+  public function test_product_update_name_price_auth()
+  {
+    $user = User::factory()->create();
+    $this->actingAs($user);
+    Category::factory()->hasProducts()->create();
+    $this->assertDatabaseCount('categories', 1);
+    $this->assertDatabaseCount('products',1);
+    $product = Product::first();
+    //Storage::fake();
+    //$file = UploadedFile::fake()->image('update.jpg');
+    $response = $this->put('/products/'.$product->id,[
+      'name' => 'Product Update',
+      'price' => 10.5
+    //  'file' => $file,
+    ]);
+    //Storage::assertExists('public/images/'.$file->hashName());
+  //  dd($response->content());
+    $product = $product->fresh();
+    $this->assertEquals($product->name,'PRODUCT UPDATE');
+    $this->assertEquals($product->price, 10.5);
+    $response->assertRedirect('/products/'.$product->id);
+  }
+  //softDelete
+  public function test_product_update_status_auth()
+  {
+    $user = User::factory()->create();
+    $this->actingAs($user);
+    Category::factory()->hasProducts()->create();
+    $this->assertDatabaseCount('categories', 1);
+    $this->assertDatabaseCount('products',1);
+    $product = Product::first();
+    //Storage::fake();
+    //$file = UploadedFile::fake()->image('update.jpg');
+    $response = $this->delete('/products/'.$product->id);
+    //Storage::assertExists('public/images/'.$file->hashName());
+  //  dd($response->content());
+    $this->assertSoftDeleted($product);
+    // $product = $product->fresh();
+    // $this->assertEquals($product->name,'PRODUCT UPDATE');
+    // $this->assertEquals($product->price, 10.5);
+    // $response->assertRedirect('/products/'.$product->id);
   }
 }

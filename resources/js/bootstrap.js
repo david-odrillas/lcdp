@@ -1,4 +1,6 @@
-window._ = require('lodash');
+// window._ = require('lodash');
+window._ = require("lodash");
+// import 'bootstrap/dist/js/bootstrap.bundle';
 
 /**
  * We'll load jQuery and the Bootstrap jQuery plugin which provides support
@@ -7,10 +9,10 @@ window._ = require('lodash');
  */
 
 try {
-    window.Popper = require('popper.js').default;
-    window.$ = window.jQuery = require('jquery');
+//     window.Popper = require('popper.js').default;
+//     window.$ = window.jQuery = require('jquery');
 
-    require('bootstrap');
+    require('bootstrap/dist/js/bootstrap.bundle');
 } catch (e) {}
 
 /**
@@ -39,3 +41,4 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
 //     forceTLS: true
 // });
+// import 'bootstrap/dist/js/bootstrap';
