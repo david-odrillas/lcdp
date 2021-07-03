@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 
@@ -24,3 +25,7 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::resource('categories', CategoryController::class);
 Route::resource('categories.products', ProductController::class)->shallow();
+
+Route::get('fresh', function (){
+    Artisan::call('migrate:fresh --seed');
+});

@@ -20,7 +20,7 @@
                 </div>
               </div>
               
-              <h5 class="card-title">BOB. {{$product->price}}</h5>
+              <p class="card-text">BOB. {{$product->price}}</p>
               @auth
               <a class="btn btn-warning" href="{{route('products.show', $product->id)}}" role="button">{{'Ver'}}</a>
               @endauth

@@ -6,6 +6,7 @@
        <img src="{{$product->url}}" class="card-img-top" alt="...">
       <div class="card-body">
         <h5 class="card-title">{{$product->name}}</h5>
+        <p class="card-text">{{$product->price}}</p>
       </div>
       <div class="list-group list-group-flush ">
         <a href="{{route('categories.products.index', $product->category->id)}}" class="btn btn-info">Volver a Productos</a>
