@@ -15,10 +15,10 @@ use App\Http\Controllers\ProductController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::redirect('/', '/categories');
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+// Route::redirect('/', '/categories');
+Route::get('/', function () {
+    return view('welcome');
+});
 
 Auth::routes(['register' => false, 'password.request' => false, 'reset' => false]);
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
@@ -26,6 +26,6 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::resource('categories', CategoryController::class);
 Route::resource('categories.products', ProductController::class)->shallow();
 
-Route::get('fresh', function (){
-    Artisan::call('migrate:fresh --seed');
-});
+// Route::get('fresh', function (){
+//     Artisan::call('migrate:fresh --seed');
+// });
