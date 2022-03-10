@@ -24,7 +24,8 @@ Auth::routes(['register' => false, 'password.request' => false, 'reset' => false
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::resource('categories', CategoryController::class);
-Route::resource('categories.products', ProductController::class)->shallow();
+Route::delete('products/{product}/delete', [ProductController::class, 'forceDelete'])->name('products.forceDelete');
+Route::resource('categories.products', ProductController::class)->shallow()->except('show');
 
 // Route::get('fresh', function (){
 //     Artisan::call('migrate:fresh --seed');

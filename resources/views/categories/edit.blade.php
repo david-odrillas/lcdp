@@ -10,7 +10,7 @@
           @csrf
           <div class="mb-3">
             <label for="name" class="form-label"><strong>{{'Categoria:'}}</strong></label>
-            <input type="text" class="form-control" id="name" name="name" value="{{$category->name}}">
+            <input type="text" class="form-control" id="name" name="name" value="{{$category->name}}" autofocus>
             @error('name')
               <span class="text-danger">
                   <strong>{{ $message }}</strong>

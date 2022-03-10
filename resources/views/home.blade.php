@@ -15,6 +15,8 @@
                     @endif
 
                     {{ __('You are logged in!') }}
+                    <a href="{{route('categories.index')}}" class="btn btn-secondary">Volver a Categorias</a>
+    </div>
                 </div>
             </div>
         </div>

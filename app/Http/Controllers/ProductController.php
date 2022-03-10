@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreProductRequest;
+use App\Http\Requests\UpdateProductRequest;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 
@@ -51,7 +52,8 @@ class ProductController extends Controller
       $path = $request->file('file')->store('public/images');
       $request->merge(['url' => Storage::url($path)]);
       $product = $category->products()->create($request->all());
-      return redirect()->route('products.show', $product->id);
+      return redirect()->route('categories.products.index', $category);
+    //   return redirect()->route('products.show', $product->id);
     }
 
     /**
@@ -86,10 +88,20 @@ class ProductController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Category $category, Product $product)
+    public function update(UpdateProductRequest $request, Category $category, Product $product)
     {
+        if($request->hasFile('file'))
+        {
+            $url = str_replace('storage', 'public', $product->url);
+            Storage::delete($url);
+            $path = $request->file('file')->store('public/images');
+            $request->merge(['url' => Storage::url($path)]);
+        }
+
         $product->update($request->all());
-        return redirect()->route('products.show', $product->id);
+        // return redirect()->route('products.show', $product->id);
+        $category = $product->category->id;
+        return redirect()->route('categories.products.index', $category);
     }
 
     /**
@@ -106,4 +118,14 @@ class ProductController extends Controller
         else  $product->delete();
     }
 
+    public function forceDelete($id)
+    {
+        $product = Product::withTrashed()->find($id);
+        $url = str_replace('storage', 'public', $product->url);
+        Storage::delete($url);
+        $category = $product->category->id;
+        // dd($category);
+        $product->forceDelete();
+        return redirect()->route('categories.products.index', $category);
+    }
 }
