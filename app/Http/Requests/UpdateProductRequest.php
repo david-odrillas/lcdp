@@ -24,7 +24,7 @@ class UpdateProductRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => "required|min:3|max:20|unique:products,name,{$this->product->id}",
+            'name' => "required|min:3|max:30",
             'price' => 'required|numeric|min:1'
         ];
     }

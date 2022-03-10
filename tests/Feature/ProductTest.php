@@ -24,7 +24,7 @@ class ProductTest extends TestCase
     $this->assertDatabaseCount('categories', 1);
     $this->assertDatabaseCount('products', 3);
     $category = Category::first();
-    $products = Product::where('category_id', $category->id)->orderBy('name', 'ASC')->get();
+    $products = Product::where('category_id', $category->id)->orderBy('name', 'DESC')->get();
     $response = $this->get('/categories/'.$category->id.'/products')
       ->assertOk()
       ->assertViewIs('products.index')
@@ -36,7 +36,7 @@ class ProductTest extends TestCase
     $this->assertDatabaseCount('categories', 1);
     $this->assertDatabaseCount('products', 3);
     $category = Category::first();
-    $products = Product::where('category_id', $category->id)->withTrashed()->orderBy('name', 'ASC')->get();
+    $products = Product::where('category_id', $category->id)->withTrashed()->orderBy('name', 'DESC')->get();
     $response = $this->get('/categories/'.$category->id.'/products')
       ->assertOk()
       ->assertViewIs('products.index')

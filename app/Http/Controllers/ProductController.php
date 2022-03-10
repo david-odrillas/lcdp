@@ -24,8 +24,8 @@ class ProductController extends Controller
      */
     public function index(Category $category)
     {
-        if(Auth::check()) $products =Product::where('category_id', $category->id)->withTrashed()->orderBy('name', 'ASC')->get();
-        else $products =Product::where('category_id', $category->id)->orderBy('name', 'ASC')->get();
+        if(Auth::check()) $products =Product::where('category_id', $category->id)->withTrashed()->orderBy('name', 'DESC')->get();
+        else $products =Product::where('category_id', $category->id)->orderBy('name', 'DESC')->get();
         return view('products.index', compact(['products', 'category']));
     }
 
